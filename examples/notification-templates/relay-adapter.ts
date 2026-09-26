@@ -47,7 +47,9 @@ export function verifySignature(rawBody: string, signature: string, secret: stri
   try {
     const parsed = JSON.parse(rawBody);
     const canonical = JSON.stringify({ ...parsed, signature: "" });
-    const expected = createHmac("sha256", secret).update(canonical).digest("hex");
+    const expected = createHmac("sha256", secret)
+      .update(`${parsed.timestamp}.${canonical}`)
+      .digest("hex");
     const a = Buffer.from(signature || "");
     const b = Buffer.from(expected);
     return a.length === b.length && timingSafeEqual(a, b);

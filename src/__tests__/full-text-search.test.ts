@@ -100,7 +100,7 @@ describe("buildPostgresRank", () => {
     const frag = buildPostgresRank("Payment", "invoice");
     expect(frag!.text).toContain("ts_rank");
     expect(frag!.text).toContain(SEARCH_VECTOR_COLUMN);
-    expect(frag!.params).toEqual(["invoice"]);
+    expect(frag!.params).toEqual(["invoice:*"]);
   });
 
   it("returns null for an empty search", () => {
